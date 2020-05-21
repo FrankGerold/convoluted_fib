@@ -1,0 +1,23 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t callipygious/multi-docker-react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true callipygious/multi-docker-react-test yarn test
+
+after_success:
+  - docker build -t callipygious/multi-client ./client
+  - docker build -t callipygious/multi-nginx ./nginx
+  - docker build -t callipygious/multi-server ./server
+  - docker build -t callipygious/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push callipygious/multi-client
+  - docker push callipygious/multi-nginx
+  - docker push callipygious/multi-server
+  - docker push callipygious/multi-worker
