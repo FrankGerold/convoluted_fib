@@ -1,0 +1,42 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "callipygious/multi-client",
+      "hostname": "client",
+      "essential": false
+    },
+
+    {
+      "name": "server",
+      "image": "callipygious/multi-server",
+      "hostname": "api",
+      "essential": false
+    },
+
+    {
+      "name": "worker",
+      "image": "callipygious/multi-worker",
+      "hostname": "worker",
+      "essential": false
+    },
+
+    {
+      "name": "nginx",
+      "image": "callipygious/multi-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "client",
+        "server"
+      ]
+    }
+  ]
+}

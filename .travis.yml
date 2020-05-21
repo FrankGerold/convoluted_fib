@@ -21,3 +21,17 @@ after_success:
   - docker push callipygious/multi-nginx
   - docker push callipygious/multi-server
   - docker push callipygious/multi-worker
+
+
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: us-east-2
+  app: convoluted-fibonacci
+  env: ConvolutedFibonacci-env
+  bucket_name: elasticbeanstalk-us-east-2-925619912783
+  bucket_path: multi-fib
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
